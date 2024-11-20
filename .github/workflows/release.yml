@@ -1,5 +1,6 @@
 name: Release
 
+# Only run this workflow on pushed tags.
 on:
   push:
     tags:
@@ -18,8 +19,10 @@ jobs:
         with:
           otp-version: '27.1.2'
           rebar3-version: '3.23.0'
-      - name: Check if application version matches created tag (see myapp.app.src).
+      - name: Check if the myapp application version matches pushed tag (see src/myapp.app.src).
         run: |
+          echo "Verifying pushed tag: ${{ github.ref_name }}"
+
           rebar3 shell --apps myapp --eval "$(cat << EOF
           Version = "${{ github.ref_name }}",
           case application:get_key(myapp, vsn) of
