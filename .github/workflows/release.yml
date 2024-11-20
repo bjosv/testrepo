@@ -54,7 +54,8 @@ jobs:
               _ ->
                   halt(1,[])
           end.
-          EOF)
+          EOF
+          )
           echo $CMD
           rebar3 shell --apps myapp --eval $CMD
   checkD:
@@ -74,6 +75,7 @@ jobs:
               {ok, Version} ->
                   halt(0,[]);
               _ ->
-                  halt(1,[])
+                  halt(1,[]) %% Check failed, shell returns exit code 1.
           end.
-          EOF)
+          EOF
+          )
