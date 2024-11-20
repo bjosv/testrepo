@@ -1,10 +1,9 @@
 name: Release
 
-on: [push, pull_request]
-# on:
-#   push:
-#     tags:
-#       - '*'
+on:
+  push:
+    tags:
+      - '*'
 
 permissions:
   contents: read
@@ -56,4 +55,5 @@ jobs:
                   halt(1,[])
           end.
           EOF)
-          rebar3 shell --apps ered --eval $CMD
+          echo '$CMD'
+          rebar3 shell --apps ered --eval '$CMD'
