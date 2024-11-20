@@ -29,7 +29,8 @@ jobs:
           case application:get_key(myapp, vsn) of
               {ok, Version} ->
                   halt(0,[]);
-              _ ->
+              Error ->
+                  io:format(user, "Version check failed, got ~p~n", [Error]),
                   halt(1,[]) %% Version check failed, give exitcode 1.
           end.
           EOF
