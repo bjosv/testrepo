@@ -22,15 +22,14 @@ jobs:
           rebar3-version: '3.23.0'
       - name: Check if vsn matches pushed tag (see src/myapp.app.src).
         run: |
-          echo "Verifying pushed tag: ${{ github.ref_name }}"
-
           rebar3 shell --apps myapp --eval "$(cat << EOF
           Version = "${{ github.ref_name }}",
           case application:get_key(myapp, vsn) of
               {ok, Version} ->
                   halt(0,[]);
               Error ->
-                  io:format(user, "Version check failed, got ~p~n", [Error]),
+                  io:format(user, "Version check failed, got ~p while pushed tag is ~s~n",
+                            [Error, Version]),
                   halt(1,[]) %% Version check failed, give exitcode 1.
           end.
           EOF
