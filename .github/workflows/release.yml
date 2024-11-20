@@ -1,4 +1,4 @@
-name: Tag created
+name: Release
 
 on: [push, pull_request]
 # on:
@@ -14,6 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Install Erlang/OTP
+        uses: erlef/setup-beam@5304e04ea2b355f03681464e683d92e3b2f18451 # v1.18.2
+        with:
+          otp-version: '27.1.2'
+          rebar3-version: '3.23.0'
       - name: Check
         run: |
           echo rebar3 shell --apps ered --eval \
@@ -22,6 +27,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Install Erlang/OTP
+        uses: erlef/setup-beam@5304e04ea2b355f03681464e683d92e3b2f18451 # v1.18.2
+        with:
+          otp-version: '27.1.2'
+          rebar3-version: '3.23.0'
       - name: Check
         run: |
           rebar3 shell --apps ered --eval \
@@ -30,6 +40,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Install Erlang/OTP
+        uses: erlef/setup-beam@5304e04ea2b355f03681464e683d92e3b2f18451 # v1.18.2
+        with:
+          otp-version: '27.1.2'
+          rebar3-version: '3.23.0'
       - name: Check
         run: |
           CMD=$(cat << EOF
