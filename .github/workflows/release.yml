@@ -69,7 +69,7 @@ jobs:
       - name: Check
         run: |
           rebar3 shell --apps myapp --eval $(cat << EOF
-          Version = ${{ github.ref_name }},
+          Version = "${{ github.ref_name }}",
           case application:get_key(myapp, vsn) of
               {ok, Version} ->
                   halt(0,[]);
