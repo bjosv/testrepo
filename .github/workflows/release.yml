@@ -43,4 +43,25 @@ jobs:
               _ ->
                   halt(1,[]) %% Check failed, shell returns exit code 1.
           end.
-          EOF)'
+          EOF
+          )'
+  checkF:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Install Erlang/OTP
+        uses: erlef/setup-beam@5304e04ea2b355f03681464e683d92e3b2f18451 # v1.18.2
+        with:
+          otp-version: '27.1.2'
+          rebar3-version: '3.23.0'
+      - name: Echo cmd
+        run: |
+          rebar3 shell --apps myapp --eval $(cat << EOF
+          'Version = "${{ github.ref_name }}",
+          case application:get_key(myapp, vsn) of
+              {ok, Version} ->
+                  halt(0,[]);
+              _ ->
+                  halt(1,[]) %% Check failed, shell returns exit code 1.
+          end.'
+          EOF)
