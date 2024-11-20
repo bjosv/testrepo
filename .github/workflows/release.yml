@@ -1,0 +1,44 @@
+name: Tag created
+
+on: [push, pull_request]
+# on:
+#   push:
+#     tags:
+#       - '*'
+
+permissions:
+  contents: read
+
+jobs:
+  checkA:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check
+        run: |
+          echo rebar3 shell --apps ered --eval \
+          '{ok, Version} = application:get_key(ered, vsn), case Version of "${{ github.ref_name }}" -> halt(0,[]); _ -> halt(1,[]) end.'
+  checkB:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check
+        run: |
+          rebar3 shell --apps ered --eval \
+          '{ok, Version} = application:get_key(ered, vsn), case Version of "${{ github.ref_name }}" -> halt(0,[]); _ -> halt(1,[]) end.'
+  checkC:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check
+        run: |
+          CMD=$(cat << EOF
+          {ok, Version} = application:get_key(ered, vsn),
+          case Version of
+              "${{ github.ref_name }}" ->
+                  halt(0,[]);
+              _ ->
+                  halt(1,[])
+          end.
+          EOF)
+          rebar3 shell --apps ered --eval $CMD
