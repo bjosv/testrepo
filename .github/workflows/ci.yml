@@ -6,13 +6,6 @@ permissions:
   contents: read
 
 jobs:
-  push:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Check
-        run: |
-          echo OK!
 
   tags:
     runs-on: ubuntu-latest
@@ -21,3 +14,20 @@ jobs:
       - name: Check if version is same as tag
         run: |
           echo "ref_name=${{ github.ref_name }}"
+
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - otp-version: '27.1.2'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Install Erlang/OTP
+        uses: erlef/setup-beam@5304e04ea2b355f03681464e683d92e3b2f18451 # v1.18.2
+        with:
+          otp-version: ${{ matrix.otp-version }}
+          rebar3-version: '3.23.0'
+      - name: Compile
+        run: rebar3 compile
